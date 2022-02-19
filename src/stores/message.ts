@@ -14,8 +14,6 @@ export const useMessageStore = defineStore({
     },
     actions: {
         addError(text: string) {
-            console.error(text);
-
             this.messages.push({
                 type: 'error',
                 text,
