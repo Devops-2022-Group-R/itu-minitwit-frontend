@@ -1,3 +1,4 @@
+import { getLoginHash } from "@/utils/utils";
 import { defineStore } from "pinia";
 
 export const useUserStore = defineStore({
@@ -14,7 +15,7 @@ export const useUserStore = defineStore({
     actions: {
         login(username: string, password: string) {
             this.username = username;
-            this.hash = btoa(`${username}:${password}`);
+            this.hash = getLoginHash(username, password);
         },
         logout() {
             this.username = '';

@@ -16,3 +16,7 @@ export const formatDateTime = (date: number): string => {
     // Why?
     return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} @ ${d.getHours()}:${d.getMinutes()}`;
 }
+
+export const getLoginHash = (username: string, password: string): string => {
+    return btoa(`${username}:${password}`);
+}
