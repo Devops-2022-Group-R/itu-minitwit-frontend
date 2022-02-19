@@ -5,10 +5,12 @@ export function useUserStore() {
     const userStore = store();
 
     const isLoggedIn = computed(() => userStore.isLoggedIn);
-    const username = computed(() => userStore.username);
+    const username = computed(() => userStore.getUsername);
+    const hash = computed(() => userStore.getHash)
 
     return {
         isLoggedIn,
         username,
+        hash
     };
 }
