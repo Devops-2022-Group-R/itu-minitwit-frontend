@@ -6,35 +6,15 @@ import LoadingWrapper from '@/components/LoadingWrapper.vue';
 
 import { useMessageStore } from '@/composables/useMessageStore';
 import { useUserStore } from '@/composables/useUserStore';
+import { useMessages } from '@/composables/useMessages';
 
-import type Message from '@/models/message';
 import { httpClient } from '@/utils/http-client';
-
-
-const { addError, clearMessages } = useMessageStore();
-
-const { username, isLoggedIn } = useUserStore();
 
 const loading = ref(false);
 
-
-const messages = reactive<Message[]>([]);
-const retriveMessages = () => {
-    loading.value = true;
-
-    httpClient.get("/msgs")
-        .then((resp) => {
-            messages.splice(0, messages.length, ...resp.data);
-        })
-        .catch((response) => {
-            addError(response);
-        })
-        .finally(() => {
-            loading.value = false;
-        });
-}
-onMounted(retriveMessages);
-
+const { addError, clearMessages } = useMessageStore();
+const { username, isLoggedIn } = useUserStore();
+const { messages, retriveMessages } = useMessages("/msgs", loading);
 
 const form = reactive({
     username: username,
