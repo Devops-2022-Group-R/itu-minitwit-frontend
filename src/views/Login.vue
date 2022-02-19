@@ -4,9 +4,10 @@ import { useRouter } from 'vue-router';
 
 import Layout from '@/components/Layout.vue';
 import { useUserStore } from '@/stores/user';
-import { httpClient } from '@/utils/http-client';
+import { createAuthHeader, httpClient } from '@/utils/http-client';
 import LoadingWrapper from '@/components/LoadingWrapper.vue';
 import { useMessageStore } from '@/composables/useMessageStore';
+import { getLoginHash } from '@/utils/utils';
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -23,19 +24,23 @@ const login = () => {
     loading.value = true;
     clearMessages();
 
-    httpClient.post('/login', form)
+    httpClient.get('/login', {
+        headers: {
+            ...createAuthHeader(getLoginHash(form.username, form.password)),
+        }
+    })
         .then((resp) => {
             if (resp.status === 204) {
                 // Save the login information
                 userStore.login(form.username, form.password);
                 router.push('/');
             } else {
-                addError(resp.data.status);
+                addError(resp.data.error);
             }
         })
         .catch((response) => {
             if (response.response) {
-                addError(response.response.data.status);
+                addError(response.response.data.error);
             } else {
                 addError(response);
             }
