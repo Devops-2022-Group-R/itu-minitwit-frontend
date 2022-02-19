@@ -15,8 +15,8 @@ const loading = ref(false);
 const form = reactive({
     username: '',
     email: '',
-    password: '',
-    password2: '',
+    pwd: '',
+    pwd2: '',
 });
 
 const register = () => {
@@ -62,11 +62,11 @@ const register = () => {
                     </dd>
                     <dt>Password:</dt>
                     <dd>
-                        <input type="password" name="password" size="30" v-model="form.password" />
+                        <input type="password" name="password" size="30" v-model="form.pwd" />
                     </dd>
                     <dt>Confirm Password:</dt>
                     <dd>
-                        <input type="password" name="password2" size="30" v-model="form.password2" />
+                        <input type="password" name="password2" size="30" v-model="form.pwd2" />
                     </dd>
                 </dl>
                 <button type="submit">Sign Up</button>
