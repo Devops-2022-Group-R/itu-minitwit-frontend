@@ -45,9 +45,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from) => {
-  const { clearErrors } = useMessageStore();
-
-  clearErrors();
+  const { clearOrIncreaseMessages } = useMessageStore();
+  clearOrIncreaseMessages();
 
   if (to.meta.requiresAuth) {
     const { isLoggedIn } = useUserStore();

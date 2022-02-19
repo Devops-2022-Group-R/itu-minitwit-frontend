@@ -6,6 +6,8 @@ export const useMessageStore = defineStore({
         messages: [] as {
             type: 'message' | 'error',
             text: string,
+            routeChanges: number,
+            minRouteChanges: number,
         }[],
     }),
     getters: {
@@ -13,16 +15,21 @@ export const useMessageStore = defineStore({
         anyMessages: (state) => state.messages.length > 0,
     },
     actions: {
-        addError(text: string) {
+        addError(text: string, minRouteChanges = 0) {
             this.messages.push({
                 type: 'error',
                 text,
+                routeChanges: 0,
+                minRouteChanges: minRouteChanges,
             });
         },
-        addMessage(text: string) {
+        addMessage(text: string, minRouteChanges = 1) {
+            console.log(text, minRouteChanges);
             this.messages.push({
                 type: 'message',
                 text,
+                routeChanges: 0,
+                minRouteChanges: minRouteChanges,
             });
         },
         clearMessages() {
@@ -30,6 +37,15 @@ export const useMessageStore = defineStore({
         },
         clearErrors() {
             this.messages = this.messages.filter(message => message.type !== 'error');
+        },
+        clearOrIncreaseMessages() {
+            this.messages = this.messages
+                .filter(message => message.routeChanges < message.minRouteChanges)
+                .map(message => {
+                    console.log(message);
+                    message.routeChanges++
+                    return message;
+                });
         }
     },
 });

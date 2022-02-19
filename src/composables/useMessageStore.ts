@@ -14,5 +14,6 @@ export const useMessageStore = () => {
         addMessage: messageStore.addMessage,
         clearMessages: messageStore.clearMessages,
         clearErrors: messageStore.clearErrors,
+        clearOrIncreaseMessages: messageStore.clearOrIncreaseMessages,
     };
 }

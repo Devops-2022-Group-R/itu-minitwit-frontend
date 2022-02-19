@@ -11,7 +11,7 @@ import { getLoginHash } from '@/utils/utils';
 
 const router = useRouter();
 const userStore = useUserStore();
-const { addError, clearMessages } = useMessageStore();
+const { addError, addMessage, clearErrors } = useMessageStore();
 
 const loading = ref(false);
 
@@ -22,7 +22,7 @@ const form = reactive({
 
 const login = () => {
     loading.value = true;
-    clearMessages();
+    clearErrors();
 
     httpClient.get('/login', {
         headers: {
@@ -33,6 +33,9 @@ const login = () => {
             if (resp.status === 204) {
                 // Save the login information
                 userStore.login(form.username, form.password);
+
+                addMessage('You are now logged in!');
+
                 router.push('/');
             } else {
                 addError(resp.data.error);

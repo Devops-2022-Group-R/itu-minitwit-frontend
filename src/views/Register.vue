@@ -8,7 +8,7 @@ import { useMessageStore } from '@/composables/useMessageStore';
 
 
 const router = useRouter();
-const { addError, clearMessages } = useMessageStore();
+const { addError, addMessage, clearErrors } = useMessageStore();
 
 const loading = ref(false);
 
@@ -21,11 +21,12 @@ const form = reactive({
 
 const register = () => {
     loading.value = true;
-    clearMessages();
+    clearErrors();
 
     httpClient.post('/register', form)
         .then((resp) => {
             if (resp.status === 204) {
+                addMessage('You are now registered!');
                 router.push('/login');
             } else {
                 addError(resp.data.status);
