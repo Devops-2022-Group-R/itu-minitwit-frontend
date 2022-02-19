@@ -29,6 +29,9 @@ export const useMessageStore = defineStore({
         },
         clearMessages() {
             this.messages = [];
+        },
+        clearErrors() {
+            this.messages = this.messages.filter(message => message.type !== 'error');
         }
     },
 });

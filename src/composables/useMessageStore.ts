@@ -13,5 +13,6 @@ export const useMessageStore = () => {
         addError: messageStore.addError,
         addMessage: messageStore.addMessage,
         clearMessages: messageStore.clearMessages,
+        clearErrors: messageStore.clearErrors,
     };
 }

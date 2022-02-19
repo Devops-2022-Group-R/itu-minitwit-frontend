@@ -3,6 +3,7 @@ import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 
 import PublicTimeline from '@/views/PublicTimeline.vue';
+import { useMessageStore } from '@/stores/message';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,7 +33,13 @@ const router = createRouter({
       name: 'register',
       component: Register
     },
-  ]
-})
+  ],
+});
+
+router.beforeEach((to, from) => {
+  const { clearErrors } = useMessageStore();
+
+  clearErrors();
+});
 
 export default router
