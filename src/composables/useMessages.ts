@@ -1,11 +1,12 @@
 import { reactive, type Ref } from "vue";
+import type { AxiosRequestConfig } from "axios";
 
 import type Message from "@/models/message";
 import { httpClient } from "@/utils/http-client";
 
 import { useMessageStore } from "./useMessageStore";
 
-export const useMessages = (url: string, loading: Ref<boolean>) => {
+export const useMessages = (url: string, loading: Ref<boolean>, options?: AxiosRequestConfig) => {
     const messages = reactive<Message[]>([]);
 
     const { addError } = useMessageStore();
@@ -13,7 +14,7 @@ export const useMessages = (url: string, loading: Ref<boolean>) => {
     const retriveMessages = () => {
         loading.value = true;
 
-        httpClient.get(url)
+        httpClient.get(url, options)
             .then((resp) => {
                 messages.splice(0, messages.length, ...resp.data);
             })
