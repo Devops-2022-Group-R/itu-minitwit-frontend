@@ -11,7 +11,7 @@ export const getGravatarUrl = (email: string, size: number) => {
 };
 
 export const formatDateTime = (date: number): string => {
-    const d = new Date(date);
+    const d = new Date(date * 1000);
 
     // Why?
     return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} @ ${d.getHours()}:${d.getMinutes()}`;
