@@ -9,7 +9,7 @@ const httpClient = axios.create({
 
 const createAuthHeader = (token: string) => {
     return {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Basic ${token}`,
     };
 }
 
