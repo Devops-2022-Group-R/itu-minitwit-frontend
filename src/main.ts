@@ -1,6 +1,9 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
+import { shim } from 'promise.prototype.finally';
+shim();
+
 import App from './App.vue'
 import router from './router'
 
