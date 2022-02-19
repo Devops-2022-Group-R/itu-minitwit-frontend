@@ -46,20 +46,18 @@ const addMessage = () => {
 </script>
 
 <template>
-    <LoadingWrapper :loading="loading">
-        <Timeline :messages="messages" title="Public Timeline">
-            <template #twitbox v-if="isLoggedIn">
-                <div class="twitbox">
-                    <h3>What's on your mind {{ username }}?</h3>
+    <Timeline :messages="messages" title="Public Timeline" :loading="loading">
+        <template #twitbox v-if="isLoggedIn">
+            <div class="twitbox">
+                <h3>What's on your mind {{ username }}?</h3>
 
-                    <form @submit.prevent="addMessage" method="post">
-                        <p>
-                            <input type="text" name="text" size="60" v-model="form.message" />
-                            <button type="submit">Share</button>
-                        </p>
-                    </form>
-                </div>
-            </template>
-        </Timeline>
-    </LoadingWrapper>
+                <form @submit.prevent="addMessage" method="post">
+                    <p>
+                        <input type="text" name="text" size="60" v-model="form.message" />
+                        <button type="submit">Share</button>
+                    </p>
+                </form>
+            </div>
+        </template>
+    </Timeline>
 </template>
