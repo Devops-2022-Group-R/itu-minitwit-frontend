@@ -21,7 +21,7 @@ const { messages, anyMessages } = useMessageStore();
         <div class="navigation">
             <template v-if="isLoggedIn">
                 <router-link to="/">my timeline</router-link>|
-                <router-link to="/public">my timeline</router-link>|
+                <router-link to="/public">public timeline</router-link>|
                 <router-link to="/logout">sign out {{ username }}</router-link>
             </template>
             <template v-else>
