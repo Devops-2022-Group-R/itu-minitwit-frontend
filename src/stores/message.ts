@@ -24,7 +24,6 @@ export const useMessageStore = defineStore({
             });
         },
         addMessage(text: string, minRouteChanges = 1) {
-            console.log(text, minRouteChanges);
             this.messages.push({
                 type: 'message',
                 text,
