@@ -8,6 +8,7 @@ import Register from '@/views/Register.vue';
 
 import PublicTimeline from '@/views/PublicTimeline.vue';
 import MyTimeline from '@/views/MyTimeline.vue';
+import FeedTimeline from '@/views/FeedTimeline.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,11 +27,11 @@ const router = createRouter({
       name: 'public timeline',
       component: PublicTimeline
     },
-    /*{
-      path: '/user/:username',
-      name: 'user timeline',
-      component: UserTimeline
-    },*/
+    {
+      path: '/feed/:username',
+      name: 'feed timeline',
+      component: FeedTimeline
+    },
     {
       path: '/login',
       name: 'login',
