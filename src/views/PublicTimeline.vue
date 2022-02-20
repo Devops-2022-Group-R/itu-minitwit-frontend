@@ -12,30 +12,30 @@ import { httpClient } from '@/utils/http-client';
 
 const loading = ref(false);
 
-const { addError, clearMessages } = useMessageStore();
+const { addError, addMessage, clearMessages } = useMessageStore();
 const { username, isLoggedIn } = useUserStore();
 const { messages, retriveMessages } = useMessages("/msgs", loading);
 
 const form = reactive({
-    username: username,
-    message: '',
+    Content: '',
 });
-const addMessage = () => {
+const postMessage = () => {
     loading.value = true;
     clearMessages();
 
-    httpClient.post('/msgs', form)
+    httpClient.post(`/msgs/${username.value}`, form)
         .then((resp) => {
             if (resp.status === 204) {
+                addMessage('Your message was recorded', 0);
                 retriveMessages();
             } else {
-                addError(resp.data.status);
+                addError(resp.data.error);
                 loading.value = false;
             }
         })
         .catch((response) => {
             if (response.response) {
-                addError(response.response.data.status);
+                addError(response.response.data.error);
             } else {
                 addError(response);
             }
@@ -51,9 +51,9 @@ const addMessage = () => {
             <div class="twitbox">
                 <h3>What's on your mind {{ username }}?</h3>
 
-                <form @submit.prevent="addMessage" method="post">
+                <form @submit.prevent="postMessage" method="post">
                     <p>
-                        <input type="text" name="text" size="60" v-model="form.message" />
+                        <input type="text" name="text" size="60" v-model="form.Content" />
                         <button type="submit">Share</button>
                     </p>
                 </form>
