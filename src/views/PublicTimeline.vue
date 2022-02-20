@@ -7,14 +7,19 @@ import LoadingWrapper from '@/components/LoadingWrapper.vue';
 import { useMessageStore } from '@/composables/useMessageStore';
 import { useUserStore } from '@/composables/useUserStore';
 import { useMessages } from '@/composables/useMessages';
-
-import { httpClient } from '@/utils/http-client';
+import { createAuthHeader, httpClient } from "@/utils/http-client";
 
 const loading = ref(false);
 
 const { addError, addMessage, clearMessages } = useMessageStore();
-const { username, isLoggedIn } = useUserStore();
+const { username, hash, isLoggedIn } = useUserStore();
 const { messages, retriveMessages } = useMessages("/msgs", loading);
+
+const options = {
+    headers: {
+        ...createAuthHeader(hash.value)
+    }
+};
 
 const form = reactive({
     Content: '',
@@ -23,7 +28,7 @@ const postMessage = () => {
     loading.value = true;
     clearMessages();
 
-    httpClient.post(`/msgs/${username.value}`, form)
+    httpClient.post(`/msgs/${username.value}`, form, options)
         .then((resp) => {
             if (resp.status === 204) {
                 addMessage('Your message was recorded', 0);
