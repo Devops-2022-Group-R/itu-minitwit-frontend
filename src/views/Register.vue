@@ -29,7 +29,7 @@ const register = () => {
                 addMessage('You are now registered!');
                 router.push('/login');
             } else {
-                addError(resp.data.status);
+                addError(resp.data.error);
             }
         })
         .catch((response) => {
