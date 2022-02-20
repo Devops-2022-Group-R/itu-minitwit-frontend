@@ -18,9 +18,7 @@ const props = defineProps<{
 
         <slot name="twitbox" />
 
-        <div class="followstatus" v-if="$slots.followstatus">
-            <slot name="followstatus" />
-        </div>
+        <slot name="followstatus" />
 
         <LoadingWrapper :loading="loading">
             <ul class="messages">

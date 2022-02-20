@@ -20,6 +20,8 @@ const { messages } = useMessages("/feed", loading, {
 
 <template>
     <Timeline :messages="messages" title="My Timeline" :loading="loading">
-        <template #followstatus>This is you!</template>
+        <template #followstatus>
+            <div class="followstatus">This is you!</div>
+        </template>
     </Timeline>
 </template>
