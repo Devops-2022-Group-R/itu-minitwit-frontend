@@ -10,6 +10,8 @@ RUN npm run build
 
 FROM nginx:stable-alpine as production-stage
 
+ENV VITE_API_URL=https://api.rhododevdron.swuwu.dk
+
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 COPY ./.infrastructure/nginx.conf /etc/nginx/conf.d/default.conf
 
