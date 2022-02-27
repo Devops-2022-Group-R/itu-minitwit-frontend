@@ -1,5 +1,7 @@
 FROM node:17.5-alpine as build-stage
 
+ENV VITE_API_URL=https://api.rhododevdron.swuwu.dk
+
 WORKDIR /app
 
 COPY . .
