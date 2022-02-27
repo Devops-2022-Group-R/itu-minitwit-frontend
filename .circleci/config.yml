@@ -1,0 +1,87 @@
+version: 2.1
+
+jobs:
+  build_and_test:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/golang:1.17-buster
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - go-mod-v4-{{ checksum "go.sum" }}
+      - run:
+          name: Install Dependencies
+          command: go mod download
+      - save_cache:
+          key: go-mod-v4-{{ checksum "go.sum" }}
+          paths:
+            - "/go/pkg/mod"
+      - run:
+          name: Run tests
+          command: |
+            mkdir -p /tmp/test-reports
+            gotestsum --junitfile /tmp/test-reports/unit-tests.xml
+      - store_test_results:
+          path: /tmp/test-reports
+
+  push_to_docker_hub:
+    # branches:
+    #   only:
+    #     - master
+    docker:
+      - image: circleci/golang:1.17-buster
+    steps:
+      - checkout
+
+      - setup_remote_docker:
+          version: 20.10.11
+          docker_layer_caching: true
+
+      - run: |
+          TAG=0.1.$CIRCLE_BUILD_NUM
+          IMAGE_PATH=$DOCKER_USERNAME/itu-minitwit-frontend
+
+          docker build -t $IMAGE_PATH:$TAG .
+          docker tag $IMAGE_PATH:$TAG $IMAGE_PATH:latest
+
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+          docker push $IMAGE_PATH:$TAG
+          docker push $IMAGE_PATH:latest
+
+  # Based on: http://www.tiernok.com/posts/2021/integrating-terraform-into-circleci-aspnet-azure-pipeline/
+  apply_infrastructure:
+    # branches:
+    #   only:
+    #     - master
+    docker:
+      - image: zenika/terraform-azure-cli:latest
+    steps:
+      - checkout
+
+      - run:
+          name: terraform apply
+          command: |
+            cd .infrastructure
+
+            # Adding these variables authenticates us with Azure as a service principal.
+            # Reference: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/service_principal_client_secret
+            export ARM_CLIENT_ID=$AZURE_SP_APPID
+            export ARM_CLIENT_SECRET=$AZURE_SP_PASSWORD
+            export ARM_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID
+            export ARM_TENANT_ID=$AZURE_TENANT
+
+            terraform init
+
+            terraform apply -var-file .tfvars
+
+workflows:
+  build_test_deploy:
+    jobs:
+      - build_and_test
+      - push_to_docker_hub:
+          requires:
+            - build_and_test
+      - apply_infrastructure:
+          requires:
+            - push_to_docker_hub
