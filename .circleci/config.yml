@@ -2,9 +2,9 @@ version: 2.1
 
 jobs:
   push_to_docker_hub:
-    # branches:
-    #   only:
-    #     - master
+    branches:
+      only:
+        - master
     docker:
       - image: circleci/golang:1.17-buster
     steps:
@@ -27,9 +27,9 @@ jobs:
 
   # Based on: http://www.tiernok.com/posts/2021/integrating-terraform-into-circleci-aspnet-azure-pipeline/
   apply_infrastructure:
-    # branches:
-    #   only:
-    #     - master
+    branches:
+      only:
+        - master
     docker:
       - image: zenika/terraform-azure-cli:latest
     steps:
