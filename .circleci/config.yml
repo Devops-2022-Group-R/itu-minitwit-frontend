@@ -54,7 +54,9 @@ jobs:
 workflows:
   build_test_deploy:
     jobs:
-      - push_to_docker_hub
+      - push_to_docker_hub:
+          context: ITU MiniTwit
       - apply_infrastructure:
           requires:
             - push_to_docker_hub
+          context: ITU MiniTwit
