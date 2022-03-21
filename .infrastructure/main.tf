@@ -36,8 +36,8 @@ resource "azurerm_app_service_plan" "frontend_asp" {
   reserved            = true
 
   sku {
-    tier = "Basic"
-    size = "B2"
+    tier = "Free"
+    size = "F1"
   }
 }
 
