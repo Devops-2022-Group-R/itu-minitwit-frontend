@@ -61,9 +61,12 @@ spec:
   - hosts:
     - rhododevdron.dk
     secretName: tls-secret
+  - hosts:
+    - rhododevdron.swuwu.dk
+    secretName: tls-secret-swuwu
   rules:
   - host: rhododevdron.dk
-    http:
+    http: &http_rules
       paths:
       - path: /
         pathType: Prefix
@@ -72,3 +75,5 @@ spec:
             name: itu-minitwit-frontend 
             port:
               number: 80
+  - host: rhododevdron.swuwu.dk
+    http: *http_rules
