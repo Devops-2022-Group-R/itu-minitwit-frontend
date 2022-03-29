@@ -119,8 +119,8 @@ workflows:
           #       - master
 
       - push_to_docker_hub:
-          # requires:
-          #   - publish_github_release
+          requires:
+            - publish_github_release
           context: ITU MiniTwit
           # filters:
           #   branches:
