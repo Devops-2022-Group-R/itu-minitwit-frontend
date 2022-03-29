@@ -19,32 +19,33 @@ jobs:
       - run:
           name: "Create a new GitHub release"
           command: |
-            # go install github.com/Devops-2022-Group-R/bump-tool@latest
-            # GIT_COMMIT_DESC=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-            # echo "Creating release the folloing info:"
-            # echo "  - Commit message: $GIT_COMMIT_DESC"
-            # echo "  - Owner:          $CIRCLE_PROJECT_USERNAME"
-            # echo "  - Repository:     $CIRCLE_PROJECT_REPONAME"
-            # VERSION=$(
-            #   bump-tool \
-            #     --token ${GITHUB_TOKEN} \
-            #     --owner ${CIRCLE_PROJECT_USERNAME} \
-            #     --repo ${CIRCLE_PROJECT_REPONAME} \
-            #     --commitMsg "$GIT_COMMIT_DESC" \
-            #     --shouldLog=false
-            # )
-            VERSION=test.0
+            go install github.com/Devops-2022-Group-R/bump-tool@latest
+            GIT_COMMIT_DESC=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
+            echo "Creating release the folloing info:"
+            echo "  - Commit message: $GIT_COMMIT_DESC"
+            echo "  - Owner:          $CIRCLE_PROJECT_USERNAME"
+            echo "  - Repository:     $CIRCLE_PROJECT_REPONAME"
+            VERSION=$(
+              bump-tool \
+                --token ${GITHUB_TOKEN} \
+                --owner ${CIRCLE_PROJECT_USERNAME} \
+                --repo ${CIRCLE_PROJECT_REPONAME} \
+                --commitMsg "$GIT_COMMIT_DESC" \
+                --shouldLog=false
+            )
+            
             mkdir -p workspace
             echo "export VERSION=$VERSION" >> workspace/shared_vars
-            # echo "Will create release with version $VERSION"
-            # go install github.com/tcnksm/ghr@latest
-            # ghr \
-            #   -t ${GITHUB_TOKEN} \
-            #   -u ${CIRCLE_PROJECT_USERNAME} \
-            #   -r ${CIRCLE_PROJECT_REPONAME} \
-            #   -c ${CIRCLE_SHA1} \
-            #   -delete \
-            #   ${VERSION}
+            echo "Will create release with version $VERSION"
+            
+            go install github.com/tcnksm/ghr@latest
+            ghr \
+              -t ${GITHUB_TOKEN} \
+              -u ${CIRCLE_PROJECT_USERNAME} \
+              -r ${CIRCLE_PROJECT_REPONAME} \
+              -c ${CIRCLE_SHA1} \
+              -delete \
+              ${VERSION}
       - persist_to_workspace:
           root: workspace
           paths:
@@ -113,25 +114,25 @@ workflows:
     jobs:
       - publish_github_release:
           context: ITU MiniTwit
-       # filters:
-          #   branches:
-          #     only:
-          #       - master
+        filters:
+          branches:
+            only:
+              - master
 
       - push_to_docker_hub:
           requires:
             - publish_github_release
           context: ITU MiniTwit
-          # filters:
-          #   branches:
-          #     only:
-          #       - master
+          filters:
+            branches:
+              only:
+                - master
 
       - apply_kubernetes:
           requires:
             - push_to_docker_hub
           context: ITU MiniTwit
-          # filters:
-          #   branches:
-          #     only:
-          #       - master
+          filters:
+            branches:
+              only:
+                - master
