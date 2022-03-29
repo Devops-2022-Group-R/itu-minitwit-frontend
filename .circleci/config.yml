@@ -111,8 +111,8 @@ jobs:
 workflows:
   build_and_deploy:
     jobs:
-      # - publish_github_release:
-      #     context: ITU MiniTwit
+      - publish_github_release:
+          context: ITU MiniTwit
        # filters:
           #   branches:
           #     only:
