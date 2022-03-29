@@ -69,6 +69,7 @@ jobs:
       - run:
           name: Build and push image
           command: |
+            VERSION=test.0
             TAG=$VERSION
             IMAGE_PATH=$DOCKER_USERNAME/itu-minitwit-frontend
 
@@ -110,16 +111,16 @@ jobs:
 workflows:
   build_and_deploy:
     jobs:
-      - publish_github_release:
-          context: ITU MiniTwit
-          # filters:
+      # - publish_github_release:
+      #     context: ITU MiniTwit
+       # filters:
           #   branches:
           #     only:
           #       - master
 
       - push_to_docker_hub:
-          requires:
-            - publish_github_release
+          # requires:
+          #   - publish_github_release
           context: ITU MiniTwit
           # filters:
           #   branches:
