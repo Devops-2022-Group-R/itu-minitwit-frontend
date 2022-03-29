@@ -114,10 +114,10 @@ workflows:
     jobs:
       - publish_github_release:
           context: ITU MiniTwit
-        filters:
-          branches:
-            only:
-              - master
+          filters:
+            branches:
+              only:
+                - master
 
       - push_to_docker_hub:
           requires:
